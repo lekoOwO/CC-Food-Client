@@ -14,15 +14,17 @@ func menu() *tview.Flex {
 		SetText("\n[:blue]CC-Food")
 
 	menu := tview.NewList().
-		AddItem("購買", "", 'a', nil).
+		AddItem("購買", "", 'a', func() {
+			pages.AddAndSwitchToPage("loginPage", loginPage(), true)
+		}).
 		AddItem("結清帳款", "", 'b', nil)
 
 	flex.AddItem(header, 0, 1, false)
 	flex.AddItem(
 		tview.NewFlex().
-			AddItem(tview.NewBox(), 0, 1, false).
+			AddItem(nil, 0, 1, false).
 			AddItem(menu, 0, 1, true).
-			AddItem(tview.NewBox(), 0, 1, false),
+			AddItem(nil, 0, 1, false),
 		0, 1, true,
 	)
 
