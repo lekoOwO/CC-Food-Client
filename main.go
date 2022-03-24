@@ -1,12 +1,12 @@
 package main
 
 import (
+	"os"
+
 	"github.com/rivo/tview"
 )
 
-const (
-	APIEndPoint = "http://172.21.192.1:8080"
-)
+var APIEndPoint = os.Getenv("CC_FOOD_API")
 
 var app *tview.Application
 var pages *tview.Pages
