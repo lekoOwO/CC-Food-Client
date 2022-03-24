@@ -15,6 +15,12 @@ func buyPage() tview.Primitive {
 
 	flex := tview.NewFlex().SetDirection(tview.FlexRow)
 
+	header := tview.NewTextView().
+		SetDynamicColors(true).
+		SetRegions(true).
+		SetTextAlign(tview.AlignCenter).
+		SetText("\n[yellow:]ESC[white:]:返回")
+
 	errText := tview.NewTextView().
 		SetDynamicColors(true).
 		SetRegions(true).
@@ -190,6 +196,7 @@ func buyPage() tview.Primitive {
 	})
 
 	flex = flex.
+		AddItem(header, 0, 1, false).
 		AddItem(errText, 0, 1, false).
 		AddItem(tview.NewFlex().
 			AddItem(nil, 0, 1, false).

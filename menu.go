@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
 
@@ -35,6 +36,13 @@ func menu() tview.Primitive {
 			AddItem(nil, 0, 5, false),
 		0, 3, true,
 	)
+
+	flex.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if event.Key() == tcell.KeyEscape {
+			pages.AddAndSwitchToPage("loginPage", loginPage(), true)
+		}
+		return event
+	})
 
 	return flex
 }

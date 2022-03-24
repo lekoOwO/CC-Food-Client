@@ -11,6 +11,12 @@ import (
 func checkoutPage() tview.Primitive {
 	flex := tview.NewFlex().SetDirection(tview.FlexRow)
 
+	header := tview.NewTextView().
+		SetDynamicColors(true).
+		SetRegions(true).
+		SetTextAlign(tview.AlignCenter).
+		SetText("\n[yellow:]Enter[white:]:選擇/取消選擇\t[yellow:]ESC[white:]:返回")
+
 	rightPanel := tview.NewFlex().SetDirection(tview.FlexRow)
 	totalTextView := tview.NewTextView().
 		SetDynamicColors(true).
@@ -20,7 +26,7 @@ func checkoutPage() tview.Primitive {
 		SetDynamicColors(true).
 		SetRegions(true).
 		SetTextAlign(tview.AlignCenter).
-		SetText("\n[:blue]請確認您已繳納正確金額，再按下送出鍵結帳！[:white]")
+		SetText("[:blue]請確認您已繳納正確金額，再按下送出鍵結帳！[:white]")
 	// reminderTextView.SetBorder(true)
 
 	errorTextView := tview.NewTextView().
@@ -134,7 +140,7 @@ func checkoutPage() tview.Primitive {
 		AddItem(nil, 0, 1, false), 0, 1, true)
 
 	flex = flex.
-		AddItem(nil, 0, 1, false).
+		AddItem(header, 0, 1, false).
 		AddItem(tview.NewFlex().
 			AddItem(nil, 0, 1, false).
 			AddItem(table, 0, 2, true).
