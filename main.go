@@ -6,7 +6,7 @@ import (
 	"github.com/rivo/tview"
 )
 
-var APIEndPoint = os.Getenv("CC_FOOD_API")
+var APIEndPoint = "http://" + os.Getenv("CC_FOOD_API")
 
 var app *tview.Application
 var pages *tview.Pages
