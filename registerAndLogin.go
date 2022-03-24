@@ -4,7 +4,7 @@ import (
 	"github.com/rivo/tview"
 )
 
-func registerAndLoginPage() *tview.Flex {
+func registerAndLoginPage() tview.Primitive {
 	userID = 0
 
 	flex := tview.NewFlex().SetDirection(tview.FlexRow)
@@ -64,7 +64,7 @@ func registerAndLoginPage() *tview.Flex {
 				return
 			}
 			userID = id
-			pages.AddAndSwitchToPage(lastPage, pageFuncs[lastPage](), true)
+			pages.SwitchToPage("menu")
 		}).
 		AddButton("Quit", func() {
 			pages.SwitchToPage("menu")

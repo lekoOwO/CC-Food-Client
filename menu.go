@@ -4,7 +4,7 @@ import (
 	"github.com/rivo/tview"
 )
 
-func menu() *tview.Flex {
+func menu() tview.Primitive {
 	flex := tview.NewFlex().SetDirection(tview.FlexRow)
 
 	header := tview.NewTextView().
@@ -15,17 +15,25 @@ func menu() *tview.Flex {
 
 	menu := tview.NewList().
 		AddItem("購買", "", 'a', func() {
-			pages.AddAndSwitchToPage("loginPage", loginPage(), true)
+			pages.AddAndSwitchToPage("buyPage", buyPage(), true)
 		}).
-		AddItem("結清帳款", "", 'b', nil)
+		AddItem("結清帳款", "", 'b', func() {
+			pages.AddAndSwitchToPage("checkoutPage", checkoutPage(), true)
+		}).
+		AddItem("商品管理", "", 'c', func() {
+			pages.AddAndSwitchToPage("productManagePage", ProductManagePage(), true)
+		}).
+		AddItem("登出", "", 'd', func() {
+			pages.AddAndSwitchToPage("loginPage", loginPage(), true)
+		})
 
-	flex.AddItem(header, 0, 1, false)
+	flex.AddItem(header, 0, 2, false)
 	flex.AddItem(
 		tview.NewFlex().
-			AddItem(nil, 0, 1, false).
+			AddItem(nil, 0, 5, false).
 			AddItem(menu, 0, 1, true).
-			AddItem(nil, 0, 1, false),
-		0, 1, true,
+			AddItem(nil, 0, 5, false),
+		0, 3, true,
 	)
 
 	return flex
