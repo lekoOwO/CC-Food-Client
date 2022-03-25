@@ -72,12 +72,13 @@ func registerAndLoginPage() tview.Primitive {
 	form.SetBorder(true).SetTitle("註冊帳號").SetTitleAlign(tview.AlignLeft)
 
 	flex = flex.
-		AddItem(header, 0, 3, false).
+		AddItem(header, 0, 1, false).
 		AddItem(errMessage, 0, 1, false).
 		AddItem(tview.NewFlex().
 			AddItem(nil, 0, 1, false).
 			AddItem(form, 0, 1, true).
 			AddItem(nil, 0, 1, false),
-			0, 4, true)
+			0, 4, true).
+		AddItem(nil, 0, 4, false)
 	return flex
 }
