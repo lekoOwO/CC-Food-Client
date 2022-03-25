@@ -15,22 +15,22 @@ func menu() tview.Primitive {
 		SetText("\n[:blue]CC-Food")
 
 	menu := tview.NewList().
-		AddItem("購買", "", 'a', func() {
+		AddItem("購買", "", 'b', func() {
 			pages.AddAndSwitchToPage("buyPage", buyPage(), true)
 		}).
-		AddItem("結清帳款", "", 'b', func() {
+		AddItem("結清帳款", "", 'p', func() {
 			pages.AddAndSwitchToPage("checkoutPage", checkoutPage(), true)
 		}).
-		AddItem("商品管理", "", 'c', func() {
+		AddItem("商品管理", "", 'P', func() {
 			pages.AddAndSwitchToPage("productManagePage", ProductManagePage(), true)
 		}).
-		AddItem("我的資料", "", 'i', func() {
+		AddItem("我的資料", "", 'm', func() {
 			pages.AddAndSwitchToPage("mePage", mePage(), true)
 		}).
 		AddItem("匯入舊系統資料", "", 'i', func() {
 			pages.AddAndSwitchToPage("importPage", importPage(), true)
 		}).
-		AddItem("登出", "", 'd', func() {
+		AddItem("登出", "", 'o', func() {
 			pages.AddAndSwitchToPage("loginPage", loginPage(), true)
 		})
 
