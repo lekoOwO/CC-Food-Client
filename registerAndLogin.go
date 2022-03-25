@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
 
@@ -65,10 +66,14 @@ func registerAndLoginPage() tview.Primitive {
 			}
 			userID = id
 			pages.SwitchToPage("menu")
-		}).
-		AddButton("Quit", func() {
-			pages.SwitchToPage("menu")
 		})
+	form.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if event.Key() == tcell.KeyEscape {
+			pages.AddAndSwitchToPage("loginPage", loginPage(), true)
+			return nil
+		}
+		return event
+	})
 	form.SetBorder(true).SetTitle("註冊帳號").SetTitleAlign(tview.AlignLeft)
 
 	flex = flex.
