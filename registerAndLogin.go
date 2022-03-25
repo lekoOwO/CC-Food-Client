@@ -72,6 +72,31 @@ func registerAndLoginPage() tview.Primitive {
 			pages.AddAndSwitchToPage("loginPage", loginPage(), true)
 			return nil
 		}
+		i, j := form.GetFocusedItemIndex()
+		if event.Key() == tcell.KeyUp && i > 0 {
+			app.SetFocus(form.GetFormItem(i - 1))
+			return nil
+		}
+		if event.Key() == tcell.KeyDown {
+			if i == form.GetFormItemCount()-1 {
+				app.SetFocus(form.GetButton(0))
+			} else {
+				app.SetFocus(form.GetFormItem(i + 1))
+			}
+			return nil
+		}
+		if event.Key() == tcell.KeyUp && i == -1 {
+			app.SetFocus(form.GetFormItem(0))
+			return nil
+		}
+		if event.Key() == tcell.KeyRight && j < form.GetButtonCount()-1 {
+			app.SetFocus(form.GetButton(j + 1))
+			return nil
+		}
+		if event.Key() == tcell.KeyLeft && j > 0 {
+			app.SetFocus(form.GetButton(j - 1))
+			return nil
+		}
 		return event
 	})
 	form.SetBorder(true).SetTitle("註冊帳號").SetTitleAlign(tview.AlignLeft)
