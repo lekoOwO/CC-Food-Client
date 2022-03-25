@@ -40,11 +40,9 @@ func EditProductPage(id uint64) tview.Primitive {
 		})
 	form.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		if event.Key() == tcell.KeyEscape {
-			pages.SwitchToPage("productManagePage")
+			pages.AddAndSwitchToPage("productManagePage", ProductManagePage(), true)
+			return nil
 		}
-		return event
-	})
-	form.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		i, j := form.GetFocusedItemIndex()
 		if event.Key() == tcell.KeyUp && i > 0 {
 			app.SetFocus(form.GetFormItem(i - 1))
@@ -158,10 +156,10 @@ func ProductManagePage() tview.Primitive {
 	})
 
 	flex = flex.
-		AddItem(header, 0, 2, false).
+		AddItem(header, 0, 1, false).
 		AddItem(tview.NewFlex().
-			AddItem(nil, 0, 2, false).
-			AddItem(table, 0, 1, true).
+			AddItem(nil, 0, 5, false).
+			AddItem(table, 0, 6, true).
 			AddItem(nil, 0, 2, false),
 			0, 4, true)
 	return flex

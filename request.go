@@ -221,6 +221,26 @@ func GetUnpaidPurchases(userID uint) ([]Purchase, error) {
 	return data, nil
 }
 
+func GetPurchase(id uint64) (*Purchase, error) {
+	res, err := http.Get(APIEndPoint + "/purchase/id/" + url.QueryEscape(fmt.Sprintf("%d", id)))
+	if err != nil {
+		return nil, err
+	}
+	if res.StatusCode != 200 {
+		return nil, error(fmt.Errorf("%d", res.StatusCode))
+	}
+
+	var data Purchase
+
+	decoder := json.NewDecoder(res.Body)
+	err = decoder.Decode(&data)
+	if err != nil {
+		return nil, err
+	}
+
+	return &data, nil
+}
+
 func pay(pr PayRequest) error {
 	b := new(bytes.Buffer)
 	err := json.NewEncoder(b).Encode(pr)
