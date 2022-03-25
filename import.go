@@ -3,51 +3,55 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"mime/multipart"
 	"net/http"
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
 
-func importFile(path string) error {
-	file, err := os.Open(path)
-	if err != nil {
-		return err
-	}
-	fileContents, err := ioutil.ReadAll(file)
-	if err != nil {
-		return err
-	}
-	fi, err := file.Stat()
-	if err != nil {
-		return err
-	}
-	file.Close()
-
+func createForm(form map[string]string) (string, io.Reader, error) {
 	body := new(bytes.Buffer)
-	writer := multipart.NewWriter(body)
-	part, err := writer.CreateFormFile("files", fi.Name())
-	if err != nil {
-		return err
+	mp := multipart.NewWriter(body)
+	defer mp.Close()
+	for key, val := range form {
+		if strings.HasPrefix(val, "@") {
+			val = val[1:]
+			file, err := os.Open(val)
+			if err != nil {
+				return "", nil, err
+			}
+			defer file.Close()
+			part, err := mp.CreateFormFile(key, val)
+			if err != nil {
+				return "", nil, err
+			}
+			io.Copy(part, file)
+		} else {
+			mp.WriteField(key, val)
+		}
 	}
-	part.Write(fileContents)
+	return mp.FormDataContentType(), body, nil
+}
 
-	err = writer.Close()
+func importFile(path string) error {
+	form := map[string]string{"files": "@" + path}
+	ct, body, err := createForm(form)
 	if err != nil {
 		return err
 	}
-
-	res, err := http.NewRequest("POST", APIEndPoint+"/import/", body)
+	resp, err := http.Post(APIEndPoint+"/import", ct, body)
 	if err != nil {
 		return err
 	}
-	if res.Response.StatusCode != 200 {
-		return error(fmt.Errorf("%d", res.Response.StatusCode))
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("%d", resp.StatusCode)
 	}
 	return nil
 }
