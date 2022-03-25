@@ -29,6 +29,27 @@ func GetUserByUsername(username string) (*UserMinimal, error) {
 	return &data, nil
 }
 
+func GetUserByID(id uint) (*User, error) {
+	res, err := http.Get(APIEndPoint + "/user/" + fmt.Sprintf("%d", id))
+
+	if err != nil {
+		return nil, err
+	}
+	if res.StatusCode != 200 {
+		return nil, error(fmt.Errorf("%d", res.StatusCode))
+	}
+
+	var data User
+
+	decoder := json.NewDecoder(res.Body)
+	err = decoder.Decode(&data)
+	if err != nil {
+		return nil, err
+	}
+
+	return &data, nil
+}
+
 func Register(displayName string, usernames []string) (uint, error) {
 	data := RegisterRequest{
 		DisplayName: displayName,
@@ -208,6 +229,40 @@ func pay(pr PayRequest) error {
 	}
 
 	res, err := http.Post(APIEndPoint+"/purchase/pay", "application/json", b)
+	if err != nil {
+		return err
+	}
+	if res.StatusCode != 200 {
+		return error(fmt.Errorf("%d", res.StatusCode))
+	}
+
+	return nil
+}
+
+func DeleteUsername(id uint64) error {
+	client := &http.Client{}
+	request, err := http.NewRequest(http.MethodDelete, APIEndPoint+"/username/"+url.QueryEscape(fmt.Sprintf("%d", id)), nil)
+	res, err := client.Do(request)
+	if err != nil {
+		return err
+	}
+	if res.StatusCode != 200 {
+		return error(fmt.Errorf("%d", res.StatusCode))
+	}
+	return nil
+}
+
+func NewUsername(id uint, username string) error {
+	nur := NewUsernameRequest{
+		Name: username,
+	}
+	b := new(bytes.Buffer)
+	err := json.NewEncoder(b).Encode(nur)
+	if err != nil {
+		return err
+	}
+
+	res, err := http.Post(APIEndPoint+"/username/"+url.QueryEscape(fmt.Sprintf("%d", id)), "application/json", b)
 	if err != nil {
 		return err
 	}

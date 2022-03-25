@@ -7,6 +7,17 @@ type UserMinimal struct {
 	DisplayName string
 }
 
+type User struct {
+	UserMinimal
+	Usernames []Username
+}
+
+type Username struct {
+	ID     uint64
+	Name   string
+	UserID uint64
+}
+
 type RegisterRequest struct {
 	Usernames   []string `json:"usernames"`
 	DisplayName string   `json:"display_name"`
@@ -26,6 +37,10 @@ type NewProductRequest struct {
 	Name    string `json:"name"`
 	Price   int64  `json:"price"`
 	Barcode string `json:"barcode"`
+}
+
+type NewUsernameRequest struct {
+	Name string `json:"name"`
 }
 
 type Product struct {

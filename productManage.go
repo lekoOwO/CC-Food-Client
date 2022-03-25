@@ -150,7 +150,7 @@ func ProductManagePage() tview.Primitive {
 		} else if event.Key() == tcell.KeyEscape {
 			pages.SwitchToPage("menu")
 		} else if event.Key() == tcell.KeyRune && event.Rune() == '+' {
-			pages.AddAndSwitchToPage("newProductDialogPage", NewProductDialogPage("", "productManagePage"), true)
+			pages.AddAndSwitchToPage("newProductDialogPage", NewProductDialogPage("", "productManagePage", func() { drawTable() }), true)
 			refresh = true
 			pages.ShowPage("productManagePage")
 		}

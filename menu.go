@@ -24,16 +24,22 @@ func menu() tview.Primitive {
 		AddItem("商品管理", "", 'c', func() {
 			pages.AddAndSwitchToPage("productManagePage", ProductManagePage(), true)
 		}).
+		AddItem("我的資料", "", 'i', func() {
+			pages.AddAndSwitchToPage("mePage", mePage(), true)
+		}).
+		AddItem("匯入舊系統資料", "", 'i', func() {
+			pages.AddAndSwitchToPage("importPage", importPage(), true)
+		}).
 		AddItem("登出", "", 'd', func() {
 			pages.AddAndSwitchToPage("loginPage", loginPage(), true)
 		})
 
-	flex.AddItem(header, 0, 2, false)
+	flex.AddItem(header, 0, 1, false)
 	flex.AddItem(
 		tview.NewFlex().
-			AddItem(nil, 0, 5, false).
+			AddItem(nil, 0, 3, false).
 			AddItem(menu, 0, 1, true).
-			AddItem(nil, 0, 5, false),
+			AddItem(nil, 0, 3, false),
 		0, 3, true,
 	)
 

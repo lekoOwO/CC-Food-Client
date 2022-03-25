@@ -59,7 +59,7 @@ func buyPage() tview.Primitive {
 
 	showAddProductDialog := func(barcode string) {
 		app.SetFocus(form.GetFormItem(0))
-		pages.AddAndSwitchToPage("newProductDialogPage", NewProductDialogPage(barcode, "buyPage"), true)
+		pages.AddAndSwitchToPage("newProductDialogPage", NewProductDialogPage(barcode, "buyPage", nil), true)
 		RefreshProducts = true
 		pages.ShowPage("buyPage")
 	}

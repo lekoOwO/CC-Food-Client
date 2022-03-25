@@ -7,7 +7,7 @@ import (
 	"github.com/rivo/tview"
 )
 
-func NewProductDialogPage(barcode string, backPage string) tview.Primitive {
+func NewProductDialogPage(barcode string, backPage string, callback func()) tview.Primitive {
 	var form *tview.Form
 	form = tview.NewForm().
 		AddInputField("品名", "", 20, nil, nil).
@@ -28,10 +28,16 @@ func NewProductDialogPage(barcode string, backPage string) tview.Primitive {
 			}
 			pages.HidePage("newProductDialogPage")
 			pages.SwitchToPage(backPage)
+			if callback != nil {
+				callback()
+			}
 		}).
 		AddButton("取消", func() {
 			pages.HidePage("newProductDialogPage")
 			pages.SwitchToPage(backPage)
+			if callback != nil {
+				callback()
+			}
 		})
 	form.SetBorder(true).SetTitle("新增商品")
 

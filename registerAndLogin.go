@@ -79,6 +79,6 @@ func registerAndLoginPage() tview.Primitive {
 			AddItem(form, 0, 1, true).
 			AddItem(nil, 0, 1, false),
 			0, 4, true).
-		AddItem(nil, 0, 4, false)
+		AddItem(nil, 0, 1, false)
 	return flex
 }
