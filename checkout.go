@@ -33,7 +33,7 @@ func PurchaseDetailPage(id uint64) tview.Primitive {
 	table.SetCell(0, 2, tview.NewTableCell("數量").SetTextColor(tcell.ColorYellow).SetAlign(tview.AlignCenter))
 	table.SetCell(0, 3, tview.NewTableCell("價格").SetTextColor(tcell.ColorYellow).SetAlign(tview.AlignCenter))
 
-	var total uint64 = 0
+	var total int64 = 0
 	for i, item := range purchase.PurchaseDetails {
 		product := products.GetProductByID(item.ProductID)
 		productName := ""
@@ -42,14 +42,14 @@ func PurchaseDetailPage(id uint64) tview.Primitive {
 		}
 		table.SetCell(i+1, 0, tview.NewTableCell(strconv.FormatUint(item.ProductID, 10)).SetAlign(tview.AlignCenter))
 		table.SetCell(i+1, 1, tview.NewTableCell(productName).SetAlign(tview.AlignCenter))
-		table.SetCell(i+1, 2, tview.NewTableCell(strconv.FormatUint(item.Quantity, 10)).SetAlign(tview.AlignCenter))
-		table.SetCell(i+1, 3, tview.NewTableCell(strconv.FormatUint(item.Total, 10)).SetAlign(tview.AlignCenter))
+		table.SetCell(i+1, 2, tview.NewTableCell(strconv.FormatInt(item.Quantity, 10)).SetAlign(tview.AlignCenter))
+		table.SetCell(i+1, 3, tview.NewTableCell(strconv.FormatInt(item.Total, 10)).SetAlign(tview.AlignCenter))
 		total += item.Total
 	}
 	table.SetCell(len(products.Products)+1, 0, tview.NewTableCell("").SetAlign(tview.AlignCenter))
 	table.SetCell(len(products.Products)+1, 1, tview.NewTableCell("").SetAlign(tview.AlignCenter))
 	table.SetCell(len(products.Products)+1, 2, tview.NewTableCell("").SetAlign(tview.AlignCenter))
-	table.SetCell(len(products.Products)+1, 3, tview.NewTableCell(strconv.FormatUint(total, 10)).SetAlign(tview.AlignCenter))
+	table.SetCell(len(products.Products)+1, 3, tview.NewTableCell(strconv.FormatInt(total, 10)).SetAlign(tview.AlignCenter))
 
 	table.SetFixed(1, 0)
 	table.Select(1, 0)
@@ -124,9 +124,9 @@ func checkoutPage() tview.Primitive {
 		table.SetCell(0, 1, tview.NewTableCell("訂單日期").SetTextColor(tcell.ColorYellow).SetAlign(tview.AlignCenter))
 		table.SetCell(0, 2, tview.NewTableCell("金額").SetTextColor(tcell.ColorYellow).SetAlign(tview.AlignCenter))
 
-		var total uint64 = 0
+		var total int64 = 0
 		for i, purchase := range purchases {
-			var _total uint64 = 0
+			var _total int64 = 0
 			for _, item := range purchase.PurchaseDetails {
 				_total += item.Total
 			}
@@ -138,12 +138,12 @@ func checkoutPage() tview.Primitive {
 			}
 
 			table.SetCell(i+1, 1, tview.NewTableCell(purchase.CreatedAt.String()))
-			table.SetCell(i+1, 2, tview.NewTableCell(strconv.FormatUint(_total, 10)).SetAlign(tview.AlignRight))
+			table.SetCell(i+1, 2, tview.NewTableCell(strconv.FormatInt(_total, 10)).SetAlign(tview.AlignRight))
 		}
 		table.SetCell(len(purchases)+1, 0, tview.NewTableCell(""))
 		table.SetCell(len(purchases)+1, 1, tview.NewTableCell(""))
-		table.SetCell(len(purchases)+1, 2, tview.NewTableCell(strconv.FormatUint(total, 10)).SetTextColor(tcell.ColorYellow).SetAlign(tview.AlignRight))
-		totalTextView.SetText("總金額: " + strconv.FormatUint(total, 10))
+		table.SetCell(len(purchases)+1, 2, tview.NewTableCell(strconv.FormatInt(total, 10)).SetTextColor(tcell.ColorYellow).SetAlign(tview.AlignRight))
+		totalTextView.SetText("總金額: " + strconv.FormatInt(total, 10))
 	}
 
 	table.SetSelectedFunc(func(row, column int) {

@@ -121,7 +121,7 @@ func ProductManagePage() tview.Primitive {
 		for i, product := range products.Products {
 			table.SetCell(i+1, 0, tview.NewTableCell(strconv.FormatUint(product.ID, 10)).SetAlign(tview.AlignCenter))
 			table.SetCell(i+1, 1, tview.NewTableCell(product.Name).SetAlign(tview.AlignCenter))
-			table.SetCell(i+1, 2, tview.NewTableCell(strconv.FormatUint(product.Price, 10)).SetAlign(tview.AlignCenter))
+			table.SetCell(i+1, 2, tview.NewTableCell(strconv.FormatInt(product.Price, 10)).SetAlign(tview.AlignCenter))
 			table.SetCell(i+1, 3, tview.NewTableCell(product.Barcode).SetAlign(tview.AlignCenter))
 		}
 		table.Select(1, 0)

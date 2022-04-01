@@ -25,7 +25,7 @@ type RegisterRequest struct {
 
 type BuyRequestDetail struct {
 	ProductID uint64
-	Quantity  uint64
+	Quantity  int64
 }
 
 type BuyRequest struct {
@@ -46,7 +46,7 @@ type NewUsernameRequest struct {
 type Product struct {
 	ID      uint64
 	Name    string
-	Price   uint64
+	Price   int64
 	Barcode string
 }
 
@@ -56,14 +56,14 @@ type Products struct {
 
 type CartItem struct {
 	ProductID uint64
-	Quantity  uint64
+	Quantity  int64
 }
 
 type PurchaseDetail struct {
 	ID        uint64
 	ProductID uint64
-	Quantity  uint64
-	Total     uint64
+	Quantity  int64
+	Total     int64
 }
 
 type Purchase struct {

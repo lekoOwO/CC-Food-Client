@@ -76,7 +76,7 @@ func buyPage() tview.Primitive {
 		}
 		cart = append(cart, CartItem{
 			ProductID: products.Products[i].ID,
-			Quantity:  uint64(quantity),
+			Quantity:  int64(quantity),
 		})
 		form.GetFormItemByLabel("商品條碼").(*tview.InputField).SetText("")
 		form.GetFormItemByLabel("商品選擇").(*tview.DropDown).SetCurrentOption(0)
