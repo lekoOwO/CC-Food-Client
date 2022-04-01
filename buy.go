@@ -118,6 +118,7 @@ func buyPage() tview.Primitive {
 		}
 		if RefreshProducts {
 			products = GetProducts()
+			form.GetFormItemByLabel("商品選擇").(*tview.DropDown).SetOptions(products.GetProductNames(), nil)
 			RefreshProducts = false
 		}
 
