@@ -9,6 +9,28 @@ import (
 
 var RefreshProducts bool = false
 
+func buySuccessDialogPage(total int) tview.Primitive {
+	flex := tview.NewFlex().SetDirection(tview.FlexRow)
+
+	text := tview.NewTextView().
+		SetDynamicColors(true).
+		SetRegions(true).
+		SetTextAlign(tview.AlignCenter).
+		SetText("\n購買成功!\n金額: " + strconv.Itoa(total) + " 元")
+
+	button := tview.NewButton("登出").SetSelectedFunc(func() {
+		pages.AddAndSwitchToPage("loginPage", loginPage(), true)
+	})
+
+	flex = flex.
+		AddItem(nil, 0, 2, false).
+		AddItem(text, 0, 3, false).
+		AddItem(button, 0, 2, true)
+
+	flex.SetBorder(true).SetTitle("購買成功").SetTitleAlign(tview.AlignCenter)
+	return modal(flex, 30, 11)
+}
+
 func buyPage() tview.Primitive {
 	products := GetProducts()
 	cart := []CartItem{}
@@ -19,7 +41,7 @@ func buyPage() tview.Primitive {
 		SetDynamicColors(true).
 		SetRegions(true).
 		SetTextAlign(tview.AlignCenter).
-		SetText("\n[yellow:]ESC[white:]:返回")
+		SetText("\n[yellow:]ESC[white:]:返回主選單\n🛈 使用[yellow:]方向鍵[white:]操控游標，[yellow:]Tab[white:] 操作下拉選單，在數量欄位按 [yellow:]Enter[white:] 將商品加入購物車")
 
 	errText := tview.NewTextView().
 		SetDynamicColors(true).
@@ -40,10 +62,11 @@ func buyPage() tview.Primitive {
 	initTable()
 
 	var form *tview.Form
+	total := 0
 
 	drawTable := func() {
 		initTable()
-		total := 0
+		total = 0
 		for i, item := range cart {
 			product := products.GetProductByID(item.ProductID)
 			price := int(item.Quantity) * int(product.Price)
@@ -88,10 +111,12 @@ func buyPage() tview.Primitive {
 		AddInputField("商品條碼", "", 20, nil, nil).
 		AddDropDown("商品選擇", products.GetProductNames(), 0, nil).
 		AddInputField("數量", "", 20, nil, nil).
-		AddButton("新增商品", func() {
-			showAddProductDialog("")
-		}).
-		AddButton("送出", func() {
+		AddButton("結帳", func() {
+			if total == 0 {
+				errText.SetText("[red:]請先將商品加入購物車")
+				app.SetFocus(form.GetFormItemByLabel("數量"))
+				return
+			}
 			var brd []BuyRequestDetail
 			for _, item := range cart {
 				brd = append(brd, BuyRequestDetail{
@@ -107,8 +132,12 @@ func buyPage() tview.Primitive {
 			if err != nil {
 				errText.SetText("[:red]購買失敗：" + err.Error())
 			} else {
-				pages.SwitchToPage("menu")
+				pages.AddAndSwitchToPage("buySuccessPage", buySuccessDialogPage(total), true)
+				pages.ShowPage("buyPage")
 			}
+		}).
+		AddButton("新增商品", func() {
+			showAddProductDialog("")
 		})
 
 	form.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
@@ -124,7 +153,11 @@ func buyPage() tview.Primitive {
 
 		i, j := form.GetFocusedItemIndex()
 
-		if event.Key() == tcell.KeyUp && i > 0 {
+		if event.Key() == tcell.KeyUp && i != -1 {
+			if i == 0 {
+				app.SetFocus(form.GetButton(0))
+				return nil
+			}
 			app.SetFocus(form.GetFormItem(i - 1))
 			return nil
 		}
@@ -197,12 +230,12 @@ func buyPage() tview.Primitive {
 	})
 
 	flex = flex.
-		AddItem(header, 0, 1, false).
+		AddItem(header, 0, 2, false).
 		AddItem(errText, 0, 1, false).
 		AddItem(tview.NewFlex().
 			AddItem(nil, 0, 1, false).
 			AddItem(form, 0, 3, true).
 			AddItem(table, 0, 3, false),
-			0, 4, true)
+			0, 5, true)
 	return flex
 }

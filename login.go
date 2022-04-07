@@ -37,7 +37,7 @@ func loginPage() tview.Primitive {
 					}
 				}
 				userID = userMinimal.ID
-				pages.SwitchToPage("menu")
+				pages.AddAndSwitchToPage("buyPage", buyPage(), true)
 			}
 		})
 
