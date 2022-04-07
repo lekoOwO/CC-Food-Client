@@ -109,7 +109,7 @@ func checkoutPage() tview.Primitive {
 		SetBorders(true).
 		SetSelectable(true, false)
 
-	purchases, err := GetUnpaidPurchases(userID)
+	purchases, err := GetUnpaidPurchasesByUserID(userID)
 	if err != nil {
 		panic(err)
 	}

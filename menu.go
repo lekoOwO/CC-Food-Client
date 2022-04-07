@@ -27,6 +27,9 @@ func menu() tview.Primitive {
 		AddItem("我的資料", "", 'm', func() {
 			pages.AddAndSwitchToPage("mePage", mePage(), true)
 		}).
+		AddItem("欠錢大戶", "", 'd', func() {
+			pages.AddAndSwitchToPage("NotPaidListPage", NotPaidListPage(), true)
+		}).
 		AddItem("匯入舊系統資料", "", 'i', func() {
 			pages.AddAndSwitchToPage("importPage", importPage(), true)
 		}).

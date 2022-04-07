@@ -201,7 +201,7 @@ func DelectProduct(id uint64) error {
 	return nil
 }
 
-func GetUnpaidPurchases(userID uint) ([]Purchase, error) {
+func GetUnpaidPurchasesByUserID(userID uint) ([]Purchase, error) {
 	res, err := http.Get(APIEndPoint + "/purchase/notPaid/" + url.QueryEscape(fmt.Sprintf("%d", userID)))
 	if err != nil {
 		return nil, err
@@ -219,6 +219,28 @@ func GetUnpaidPurchases(userID uint) ([]Purchase, error) {
 	}
 
 	return data, nil
+}
+
+func GetUnpaidPurchases() ([]Purchase, error) {
+	res, err := http.Get(APIEndPoint + "/purchase/notPaid/")
+	if err != nil {
+		return nil, err
+	}
+	if res.StatusCode != 200 {
+		return nil, error(fmt.Errorf("%d", res.StatusCode))
+	}
+
+	var data struct {
+		Purchases []Purchase `json:"purchases"`
+	}
+
+	decoder := json.NewDecoder(res.Body)
+	err = decoder.Decode(&data)
+	if err != nil {
+		return nil, err
+	}
+
+	return data.Purchases, nil
 }
 
 func GetPurchase(id uint64) (*Purchase, error) {
